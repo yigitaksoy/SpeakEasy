@@ -23,6 +23,22 @@ const Register = () => {
             <form className="space-y-4 md:space-y-6" action="#">
               <div>
                 <label
+                  htmlFor="username"
+                  className="mb-2 block text-sm font-medium text-gray-900 "
+                >
+                  Username
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 sm:text-sm"
+                  placeholder="username"
+                  required
+                />
+              </div>
+              <div>
+                <label
                   htmlFor="email"
                   className="mb-2 block text-sm font-medium text-gray-900 "
                 >
@@ -91,7 +107,7 @@ const Register = () => {
                 type="submit"
                 className="w-full rounded-lg bg-black px-5 py-2.5  text-center text-sm font-medium text-white hover:bg-neutral-800  focus:outline-none focus:ring-4 focus:ring-violet-300"
               >
-                Sign up
+                Create an account
               </button>
               <p className="text-sm font-light text-gray-500 ">
                 Already have an account?
