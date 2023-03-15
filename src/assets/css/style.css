@@ -1,0 +1,9 @@
+/*  Adobe Fonts     */
+
+@import url("https://use.typekit.net/eqf4dox.css");
+
+/*  Tailwind    */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
