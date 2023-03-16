@@ -18,32 +18,35 @@ const Register = () => {
       setUserPassword(value);
     } else if (name === "confirmPassword") {
       setConfirmPassword(value);
-      setPasswordsMatch(value === userPassword);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { value: username } = e.target[0];
-    const { value: email } = e.target[1];
-    const { value: password } = e.target[2];
+    if (userPassword === confirmPassword) {
+      try {
+        const { value: username } = e.target[0];
+        const { value: email } = e.target[1];
+        const { value: password } = e.target[2];
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-      console.log(user);
-    } catch (error) {
-      console.log(error);
-      if (error.message === "Firebase: Error (auth/email-already-in-use).") {
-        setErr("This email address is already in use.");
-      } else {
-        setErr(error.message);
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
+        console.log(user);
+      } catch (error) {
+        console.log(error);
+        if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+          setErr("This email address is already in use.");
+        } else {
+          setErr(error.message);
+        }
       }
+    } else {
+      setPasswordsMatch(false);
     }
   };
 
