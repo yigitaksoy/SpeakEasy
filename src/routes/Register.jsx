@@ -11,13 +11,14 @@ const Register = () => {
   const [err, setErr] = useState(false);
 
   const handleChange = (e) => {
-    if (e.target.name === "email") {
-      setConfirmEmail(e.target.value);
-    } else if (e.target.name === "password") {
-      setUserPassword(e.target.value);
-    } else if (e.target.name === "confirmPassword") {
-      setConfirmPassword(e.target.value);
-      setPasswordsMatch(e.target.value === userPassword);
+    const { name, value } = e.target;
+    if (name === "email") {
+      setConfirmEmail(value);
+    } else if (name === "password") {
+      setUserPassword(value);
+    } else if (name === "confirmPassword") {
+      setConfirmPassword(value);
+      setPasswordsMatch(value === userPassword);
     }
   };
 
