@@ -1,35 +1,54 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 
 const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [err, setErr] = useState(false);
 
   const handleChange = (e) => {
     if (e.target.name === "email") {
-      setEmail(e.target.value);
+      setConfirmEmail(e.target.value);
     } else if (e.target.name === "password") {
-      setPassword(e.target.value);
+      setUserPassword(e.target.value);
     } else if (e.target.name === "confirmPassword") {
       setConfirmPassword(e.target.value);
-      setPasswordsMatch(e.target.value === password);
+      setPasswordsMatch(e.target.value === userPassword);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("username: ", e.target[0].value);
-    console.log("Email: ", e.target[1].value);
-    console.log("Password: ", e.target[2].value);
+    const { value: username } = e.target[0];
+    const { value: email } = e.target[1];
+    const { value: password } = e.target[2];
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+      if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+        setErr("This email address is already in use.");
+      } else {
+        setErr(error.message);
+      }
+    }
   };
 
   useEffect(() => {
-    setPasswordsMatch(password === confirmPassword);
-  }, [password, confirmPassword]);
+    setPasswordsMatch(userPassword === confirmPassword);
+  }, [userPassword, confirmPassword]);
 
   return (
     <section className="h-auto bg-sky-400 font-fontInforma">
@@ -86,6 +105,11 @@ const Register = () => {
                   placeholder="name@email.com"
                   required
                 />
+                {err && (
+                  <span className="text-center text-sm font-bold text-red-500">
+                    {err}
+                  </span>
+                )}
               </div>
               <div>
                 <label
