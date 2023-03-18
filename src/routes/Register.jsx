@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase/firebase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, storage, db } from "../firebase/firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { doc, setDoc } from "firebase/firestore";
 
 const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -9,6 +11,20 @@ const Register = () => {
   const [confirmEmail, setConfirmEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [err, setErr] = useState(false);
+  const [selectedFile, setSelectedFile] = useState("");
+
+  const handleFileSelect = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setSelectedFile(e.dataTransfer.files[0]);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,16 +42,33 @@ const Register = () => {
 
     if (userPassword === confirmPassword) {
       try {
-        const { value: username } = e.target[0];
+        const { value: displayName } = e.target[0];
         const { value: email } = e.target[1];
         const { value: password } = e.target[2];
+        const file = e.target[4].files[0];
 
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-        const user = userCredential.user;
+        const res = await createUserWithEmailAndPassword(auth, email, password);
+
+        const date = new Date().getTime();
+        const storageRef = ref(storage, `${displayName + date}`);
+
+        await uploadBytesResumable(storageRef, file).then(() => {
+          getDownloadURL(storageRef).then(async (downloadURL) => {
+            await updateProfile(res.user, {
+              displayName,
+              photoURL: downloadURL,
+            });
+            await setDoc(doc(db, "users", res.user.uid), {
+              uid: res.user.uid,
+              displayName,
+              email,
+              photoURL: downloadURL,
+            });
+            console.log("File available at", downloadURL);
+          });
+        });
+
+        const user = res.user;
         console.log(user);
       } catch (error) {
         console.log(error);
@@ -166,6 +199,62 @@ const Register = () => {
                 ) : (
                   ""
                 )}
+              </div>
+              <div>
+                <label
+                  htmlFor="confirmPassword"
+                  className="mb-2 block text-sm font-medium text-gray-900 "
+                >
+                  Select a profile picture
+                </label>
+                <div
+                  className="flex w-full items-center justify-center"
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                >
+                  <label
+                    htmlFor="file"
+                    className="relative flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 hover:bg-gray-100"
+                  >
+                    {selectedFile ? (
+                      <img
+                        src={URL.createObjectURL(selectedFile)}
+                        alt="Selected file"
+                        className="h-full w-full rounded-lg object-contain"
+                      />
+                    ) : (
+                      <div className="relative flex flex-col items-center justify-center pt-5 pb-6">
+                        <svg
+                          aria-hidden="true"
+                          className="mb-3 h-10 w-10 text-gray-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                          />
+                        </svg>
+                        <p className="mb-2 text-sm text-gray-500">
+                          <span className="font-semibold">Click to upload</span>{" "}
+                          or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500">SVG, PNG, JPG</p>
+                      </div>
+                    )}
+                    <input
+                      id="file"
+                      type="file"
+                      className="hidden"
+                      onChange={handleFileSelect}
+                      required
+                    />
+                  </label>
+                </div>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-start">
