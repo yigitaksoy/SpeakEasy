@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, storage, db } from "../firebase/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -12,6 +12,8 @@ const Register = () => {
   const [userPassword, setUserPassword] = useState("");
   const [err, setErr] = useState(false);
   const [selectedFile, setSelectedFile] = useState("");
+
+  const navigate = useNavigate();
 
   const handleFileSelect = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -64,7 +66,10 @@ const Register = () => {
               email,
               photoURL: downloadURL,
             });
+            await setDoc(doc(db, "userChats", res.user.uid), {});
+
             console.log("File available at", downloadURL);
+            navigate("/login");
           });
         });
 
