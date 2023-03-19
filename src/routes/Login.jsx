@@ -1,8 +1,31 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 
 const Login = () => {
+  const [err, setErr] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const email = e.target[0].value;
+    const password = e.target[1].value;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+        navigate("/");
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        setErr(errorMessage);
+      });
+  };
+
   return (
-    <section className="h-screen bg-sky-400 font-fontInforma  ">
+    <section className="h-screen bg-sky-400 font-fontInforma">
       <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
         <Link
           to="/"
@@ -20,20 +43,23 @@ const Login = () => {
             <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
               Welcome back!
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <div className="text-center text-sm text-red-500">
+              {err && <span>Something went wrong</span>}
+            </div>
+            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="email"
                   className="mb-2 block text-sm font-medium text-gray-900 "
                 >
-                  Username
+                  Email
                 </label>
                 <input
-                  type="text"
-                  name="username"
-                  id="username"
+                  type="email"
+                  name="email"
+                  id="email"
                   className="block  w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 sm:text-sm"
-                  placeholder="username"
+                  placeholder="name@email.com"
                   required
                 />
               </div>
@@ -56,22 +82,6 @@ const Login = () => {
                 />
               </div>
               <div className="flex items-center justify-between">
-                <div className="flex items-start">
-                  <div className="flex h-5 items-center">
-                    <input
-                      id="remember"
-                      aria-describedby="remember"
-                      type="checkbox"
-                      className="focus:ring-3 focus:ring-primary-300  h-4 w-4 rounded border border-gray-300 bg-gray-50"
-                      required
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label htmlFor="remember" className="text-gray-500 ">
-                      Remember me
-                    </label>
-                  </div>
-                </div>
                 <Link
                   to="#"
                   className="text-sm font-black text-black hover:underline"
