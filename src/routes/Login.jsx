@@ -16,7 +16,7 @@ const Login = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
-        navigate("/");
+        navigate("/chat");
       })
       .catch((error) => {
         const errorMessage = error.message;
