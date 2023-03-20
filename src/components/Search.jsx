@@ -74,6 +74,9 @@ const Search = () => {
     } catch (error) {
       console.log(error);
     }
+
+    setUser(null);
+    setUsername("");
   };
 
   return (
