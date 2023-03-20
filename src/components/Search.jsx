@@ -1,13 +1,26 @@
-import { useState } from "react";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "../firebase/firebase";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  collection,
+  query,
+  where,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { db } from "../firebase/firebase";
+import { AuthContext } from "../context/AuthContext";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 const Search = () => {
   const [username, setUsername] = useState("");
   const [user, setUser] = useState(null);
   const [error, setError] = useState(false);
+
+  const { currentUser } = useContext(AuthContext);
 
   const handleSearch = async () => {
     const q = query(
@@ -21,12 +34,46 @@ const Search = () => {
         setUser(doc.data());
       });
     } catch (error) {
+      console.info(error);
       setError(true);
     }
   };
 
   const handleKey = (e) => {
     e.code === "Enter" && handleSearch();
+  };
+
+  const handleSelect = async () => {
+    const combinedId =
+      currentUser.uid > user.uid
+        ? currentUser.uid + user.uid
+        : user.uid + currentUser.uid;
+    try {
+      const res = await getDoc(doc(db, "chats", combinedId));
+      if (!res.exists()) {
+        await setDoc(doc(db, "chats", combinedId), { messages: [] });
+
+        await updateDoc(doc(db, "userChats", currentUser.uid), {
+          [combinedId + ".userIngo"]: {
+            uid: user.uid,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+        });
+
+        await updateDoc(doc(db, "userChats", currentUser.uid), {
+          [combinedId + ".userIngo"]: {
+            uid: currentUser.uid,
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -52,7 +99,10 @@ const Search = () => {
               Users
             </h2>
             <li>
-              <Link className="flex cursor-pointer items-center border-b border-gray-300 px-3 py-2 text-sm transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none">
+              <Link
+                className="flex cursor-pointer items-center border-b border-gray-300 px-3 py-2 text-sm transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none"
+                onClick={handleSelect}
+              >
                 <img
                   className="h-10 w-10 rounded-full object-cover"
                   src={user.photoURL}
