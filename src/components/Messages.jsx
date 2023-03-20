@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 const Messages = () => {
   return (
     <ul className="overflow-auto sm:invisible md:visible">
-      <h2 className="my-2 mb-2 ml-2 text-lg text-gray-600">Chats</h2>
+      <h2 className="text-md my-2 mb-2 ml-2 font-fontNove text-black ">
+        Chats
+      </h2>
       <li>
         <Link className="flex cursor-pointer items-center border-b border-gray-300 px-3 py-2 text-sm transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none">
           <img
