@@ -19,7 +19,7 @@ const Sidebar = () => {
             : "hidden lg:block"
         }`}
       >
-        <div className="mt-12 flex-1 border-r border-gray-300 lg:border-0">
+        <div className="mt-12 flex-1 border-r border-gray-300 md:mt-5 lg:border-0">
           <Search />
           <Messages />
         </div>
