@@ -17,13 +17,8 @@ export const AuthContextProvider = ({ children }) => {
     };
   }, []);
 
-  const getCurrentUser = () => {
-    console.log(currentUser);
-    return currentUser;
-  };
-
   return (
-    <AuthContext.Provider value={{ getCurrentUser }}>
+    <AuthContext.Provider value={{ currentUser }}>
       {children}
     </AuthContext.Provider>
   );
