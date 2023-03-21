@@ -73,7 +73,7 @@ const MessageInput = () => {
   };
 
   return (
-    <div className="flex w-full items-center justify-between border-t border-gray-300 p-3">
+    <div className="flex w-full items-center justify-between border-t border-l border-gray-300 p-3">
       <div>
         <PaperClipIcon className="h-5 w-5 -rotate-12 cursor-pointer text-gray-500" />
         <input
