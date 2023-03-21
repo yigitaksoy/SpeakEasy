@@ -10,6 +10,7 @@ const Messages = () => {
 
   const { currentUser } = useContext(AuthContext);
   const { dispatch } = useContext(ChatContext);
+  const [selectedMessage, setSelectedMessage] = useState(null);
 
   useEffect(() => {
     const getMessages = () => {
@@ -26,7 +27,8 @@ const Messages = () => {
     currentUser.uid && getMessages();
   }, [currentUser.uid]);
 
-  const handleSelect = (user) => {
+  const handleSelect = (user, messageId) => {
+    setSelectedMessage(messageId);
     dispatch({ type: "CHANGE_USER", payload: user });
   };
 
@@ -35,7 +37,7 @@ const Messages = () => {
       <h2 className="text-md my-2 mb-2 ml-2 font-fontNove text-black ">
         Chats
       </h2>
-      <div>
+      <div className="p-2">
         {Object.entries(messages)
           ?.sort((a, b) => {
             if (b[1].date && a[1].date) {
@@ -46,22 +48,39 @@ const Messages = () => {
           })
           .map((message) => (
             <Link
-              className="bg-natural-200 mb-2 flex cursor-pointer items-center rounded-xl px-3 py-2 text-sm shadow-lg transition duration-150 ease-in-out hover:bg-gray-100"
+              className={`bg-natural-200 mb-2 flex cursor-pointer items-center rounded-xl px-3 py-2 text-sm shadow-lg ${
+                selectedMessage === message[0]
+                  ? "text-bold  hover: bg-black text-white"
+                  : "bg-white hover:bg-gray-100"
+              }`}
               key={message[0]}
-              onClick={() => handleSelect(message[1].userInfo)}
+              onClick={() => handleSelect(message[1].userInfo, message[0])}
             >
-              <img
-                className="h-10 w-10 rounded-full object-cover"
-                src={message[1]?.userInfo.photoURL}
-                alt="username"
-              />
+              <div className="indicator avatar">
+                {/* New message notification */}
+                <div className="h-10 w-10 rounded-full">
+                  <img src={message[1]?.userInfo.photoURL} alt="username" />
+                </div>
+              </div>
               <div className="w-full pb-2">
                 <div className="flex justify-between">
-                  <span className="ml-2 block font-black text-black">
+                  <span
+                    className={`ml-2 block font-black ${
+                      selectedMessage === message[0]
+                        ? "bg-black text-white"
+                        : "text-black"
+                    }`}
+                  >
                     {message[1]?.userInfo.displayName}
                   </span>
-                  <span className="ml-2 block text-sm text-black">
-                    <time className="text-xs text-zinc-500">
+                  <span className="ml-2 block text-sm">
+                    <time
+                      className={`text-[0.6rem] ${
+                        selectedMessage === message[0]
+                          ? " text-white"
+                          : " text-zinc-500"
+                      }`}
+                    >
                       {message[1]?.date &&
                         new Date(
                           message[1].date.seconds * 1000
