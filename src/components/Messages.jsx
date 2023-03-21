@@ -92,7 +92,7 @@ const Messages = () => {
                     </time>
                   </span>
                 </div>
-                <span className="ml-2 block text-sm text-gray-500">
+                <span className="ml-2 block text-sm text-gray-500 line-clamp-1">
                   {message[1]?.lastMessage?.text}
                 </span>
               </div>
