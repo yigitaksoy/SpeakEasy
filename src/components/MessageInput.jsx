@@ -80,7 +80,7 @@ const MessageInput = () => {
   };
 
   return (
-    <div className="flex w-full items-center justify-between border-t border-l border-gray-300 p-3">
+    <div className="flex w-full items-center justify-between p-3 shadow-lg">
       <div>
         <PaperClipIcon className="h-5 w-5 -rotate-12 cursor-pointer text-gray-500" />
         <input
@@ -97,7 +97,7 @@ const MessageInput = () => {
       <input
         type="text"
         placeholder="Type a message"
-        className="mx-3 block w-full rounded-full bg-gray-100 py-2 pl-4 outline-none focus:text-gray-700"
+        className="input mx-3 block w-full bg-gray-100 py-2 pl-4 text-black outline-none focus:outline-none"
         name="message"
         value={text}
         onChange={(e) => setText(e.target.value)}
