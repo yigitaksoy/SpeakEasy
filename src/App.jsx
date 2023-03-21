@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext";
+import { ChatContextProvider } from "./context/ChatContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./assets/css/style.css";
 import Home from "./routes/Home";
@@ -10,21 +11,23 @@ import Chat from "./routes/Chat";
 const App = () => {
   return (
     <AuthContextProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/chat"
-            element={
-              <ProtectedRoute>
-                <Chat />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
+      <ChatContextProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/chat"
+              element={
+                <ProtectedRoute>
+                  <Chat />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </ChatContextProvider>
     </AuthContextProvider>
   );
 };
