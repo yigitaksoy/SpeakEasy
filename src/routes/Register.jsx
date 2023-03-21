@@ -70,7 +70,7 @@ const Register = () => {
             await setDoc(doc(db, "userChats", res.user.uid), {});
 
             console.log("File available at", downloadURL);
-            navigate("/");
+            navigate("/chat");
           });
         });
 
