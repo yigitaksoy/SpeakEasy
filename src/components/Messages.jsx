@@ -36,30 +36,34 @@ const Messages = () => {
         Chats
       </h2>
       <li>
-        {Object.entries(messages)?.map((message) => (
-          <Link
-            className="flex cursor-pointer items-center border-b border-gray-300 px-3 py-2 text-sm transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none"
-            key={message[0]}
-            onClick={() => handleSelect(message[1].userInfo)}
-          >
-            <img
-              className="h-10 w-10 rounded-full object-cover"
-              src={message[1]?.userInfo.photoURL}
-              alt="username"
-            />
-            <div className="w-full pb-2">
-              <div className="flex justify-between">
-                <span className="ml-2 block font-semibold text-gray-600">
-                  {message[1]?.userInfo.displayName}
+        {Object.entries(messages)
+          ?.sort((a, b) => b[1].date - a[1].date)
+          .map((message) => (
+            <Link
+              className="flex cursor-pointer items-center border-b border-gray-300 px-3 py-2 text-sm transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none"
+              key={message[0]}
+              onClick={() => handleSelect(message[1].userInfo)}
+            >
+              <img
+                className="h-10 w-10 rounded-full object-cover"
+                src={message[1]?.userInfo.photoURL}
+                alt="username"
+              />
+              <div className="w-full pb-2">
+                <div className="flex justify-between">
+                  <span className="ml-2 block font-semibold text-gray-600">
+                    {message[1]?.userInfo.displayName}
+                  </span>
+                  <span className="ml-2 block text-sm text-gray-600">
+                    6 hour
+                  </span>
+                </div>
+                <span className="ml-2 block text-sm text-gray-600">
+                  {message[1]?.lastMessage?.text}
                 </span>
-                <span className="ml-2 block text-sm text-gray-600">6 hour</span>
               </div>
-              <span className="ml-2 block text-sm text-gray-600">
-                {message[1]?.lastMessage?.text}
-              </span>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
       </li>
     </ul>
   );
