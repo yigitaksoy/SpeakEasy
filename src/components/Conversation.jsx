@@ -47,7 +47,7 @@ const Conversation = () => {
         </button>
       </div>
       <div
-        className="relative h-[40rem] w-full overflow-y-auto border-l border-gray-300 p-6 md:h-[35rem]
+        className="relative h-[40rem] w-full overflow-y-auto p-6 md:h-[35rem]
       "
       >
         {messages.map((message) => {
