@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
 import { signOut } from "firebase/auth";
@@ -10,6 +10,16 @@ const Conversation = () => {
   const { data } = useContext(ChatContext);
   const [messages, setMessages] = useState([]);
   const { currentUser } = useContext(AuthContext);
+
+  const ref = useRef();
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  }, [messages]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
@@ -36,16 +46,20 @@ const Conversation = () => {
           <ArrowRightOnRectangleIcon className=" h-6 w-6 text-sky-400" />
         </button>
       </div>
-      <div className="relative h-[40rem] w-full overflow-y-auto border-l border-gray-300 p-6 md:h-[35rem]">
+      <div
+        className="relative h-[40rem] w-full overflow-y-auto border-l border-gray-300 p-6 md:h-[35rem]
+      "
+      >
         {messages.map((message) => {
           const isCurrentUser = message.senderId === currentUser.uid;
           const bubbleClass = isCurrentUser
-            ? "chat-bubble-info text-white"
-            : "bg-gray-200 text-black";
+            ? "chat-bubble-info shadow-md text-white"
+            : "bg-gray-200 text-black shadow-md";
           return (
             <div
               key={message.id}
               className={`chat ${isCurrentUser ? "chat-end" : "chat-start"}`}
+              ref={ref}
             >
               <div className="chat-image avatar">
                 <div className="w-10 rounded-full">
