@@ -72,6 +72,13 @@ const MessageInput = () => {
     setImage(null);
   };
 
+  const handleKey = (e) => {
+    if (e.code === "Enter") {
+      handleSend();
+      setText("");
+    }
+  };
+
   return (
     <div className="flex w-full items-center justify-between border-t border-l border-gray-300 p-3">
       <div>
@@ -94,6 +101,7 @@ const MessageInput = () => {
         name="message"
         value={text}
         onChange={(e) => setText(e.target.value)}
+        onKeyDown={handleKey}
       />
       <button onClick={handleSend}>
         <PaperAirplaneIcon className="h-5 w-5 -rotate-12 text-gray-500" />
