@@ -31,16 +31,22 @@ const Messages = () => {
   };
 
   return (
-    <ul className="overflow-auto sm:invisible md:visible">
+    <div className="overflow-auto sm:invisible md:visible">
       <h2 className="text-md my-2 mb-2 ml-2 font-fontNove text-black ">
         Chats
       </h2>
-      <li>
+      <div>
         {Object.entries(messages)
-          ?.sort((a, b) => b[1].date - a[1].date)
+          ?.sort((a, b) => {
+            if (b[1].date && a[1].date) {
+              return b[1].date - a[1].date;
+            } else {
+              return 0;
+            }
+          })
           .map((message) => (
             <Link
-              className="flex cursor-pointer items-center border-b border-gray-300 px-3 py-2 text-sm transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none"
+              className="bg-natural-200 mb-2 flex cursor-pointer items-center rounded-xl px-3 py-2 text-sm shadow-lg transition duration-150 ease-in-out hover:bg-gray-100"
               key={message[0]}
               onClick={() => handleSelect(message[1].userInfo)}
             >
@@ -51,21 +57,30 @@ const Messages = () => {
               />
               <div className="w-full pb-2">
                 <div className="flex justify-between">
-                  <span className="ml-2 block font-semibold text-gray-600">
+                  <span className="ml-2 block font-black text-black">
                     {message[1]?.userInfo.displayName}
                   </span>
-                  <span className="ml-2 block text-sm text-gray-600">
-                    6 hour
+                  <span className="ml-2 block text-sm text-black">
+                    <time className="text-xs text-zinc-500">
+                      {message[1]?.date &&
+                        new Date(
+                          message[1].date.seconds * 1000
+                        ).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: false,
+                        })}
+                    </time>
                   </span>
                 </div>
-                <span className="ml-2 block text-sm text-gray-600">
+                <span className="ml-2 block text-sm text-gray-500">
                   {message[1]?.lastMessage?.text}
                 </span>
               </div>
             </Link>
           ))}
-      </li>
-    </ul>
+      </div>
+    </div>
   );
 };
 
