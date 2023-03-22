@@ -9,8 +9,8 @@ const Chat = () => {
       <div className="flex items-center justify-center md:h-screen">
         <div className="container mx-auto max-w-4xl">
           <div className="flex min-w-full flex-col font-fontInforma">
-            <div className="flex-1 rounded-lg border border-gray-200 bg-white lg:grid lg:grid-cols-3">
-              <div className="bg-slate-50 lg:col-span-1">
+            <div className="flex-1 rounded-xl border-2 border-stone-800 lg:grid lg:grid-cols-3">
+              <div className="rounded-tl-lg rounded-bl-lg bg-slate-100 lg:col-span-1">
                 <Navbar />
                 <Sidebar />
               </div>
