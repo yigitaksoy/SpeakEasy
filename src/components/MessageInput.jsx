@@ -80,9 +80,8 @@ const MessageInput = () => {
   };
 
   return (
-    <div className="flex w-full items-center justify-between bg-white p-3 shadow-lg">
+    <div className="flex w-full items-center justify-between rounded-br-lg bg-white p-3 shadow-lg">
       <div>
-        <PaperClipIcon className="h-5 w-5 -rotate-12 cursor-pointer text-gray-500" />
         <input
           type="file"
           id="file"
@@ -90,7 +89,7 @@ const MessageInput = () => {
           className="hidden"
         />
         <label htmlFor="file">
-          <img src={image} alt="" />
+          <PaperClipIcon className="h-5 w-5 -rotate-12 cursor-pointer text-gray-500" />
         </label>
       </div>
 
