@@ -30,7 +30,7 @@ const Conversation = () => {
   }, [data.chatId]);
   return (
     <div>
-      <div className="relative flex items-center border-b bg-black p-3 md:rounded-tr-lg">
+      <div className="relative flex items-center border-b bg-black p-3 md:rounded-tr-xl">
         <img
           className="h-10 w-10 rounded-full object-cover"
           src={data.user?.photoURL}
@@ -47,7 +47,7 @@ const Conversation = () => {
         </button>
       </div>
       <div
-        className="relative h-[40rem] w-full overflow-y-auto p-6 md:h-[35rem]
+        className="relative h-[40rem] w-full overflow-y-auto bg-white p-6 md:h-[35rem]
       "
       >
         {messages.map((message) => {
