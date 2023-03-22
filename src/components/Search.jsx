@@ -81,13 +81,13 @@ const Search = () => {
 
   return (
     <div className="mx-3 my-3">
-      <div className="relative rounded-lg text-gray-600">
+      <div className="relative rounded-xl text-gray-600 shadow-md">
         <span className="absolute inset-y-0 left-0 flex items-center pl-2">
           <MagnifyingGlassIcon className="h-5 w-5 text-gray-500" />
         </span>
         <input
           type="search"
-          className="block w-full rounded bg-gray-100 py-2 pl-10 outline-none"
+          className="input block w-full bg-white py-2 pl-10 outline-none"
           name="search"
           placeholder="Search"
           onChange={(e) => setUsername(e.target.value)}
