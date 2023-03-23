@@ -87,7 +87,7 @@ const Search = () => {
         </span>
         <input
           type="search"
-          className="input block w-full bg-white py-2 pl-10 outline-none"
+          className="input block w-full bg-white py-2 pl-10 focus:outline-none"
           name="search"
           placeholder="Search"
           onChange={(e) => setUsername(e.target.value)}
