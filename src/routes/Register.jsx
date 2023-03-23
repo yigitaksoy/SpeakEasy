@@ -5,6 +5,7 @@ import { auth, storage, db } from "../firebase/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import RegisterForm from "../components/RegisterForm";
+import { ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
 
 const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -100,12 +101,10 @@ const Register = () => {
           to="/"
           className="mb-6 flex items-center font-fontNove text-2xl font-semibold text-gray-900"
         >
-          <img
-            className="mr-2 h-8 w-8"
-            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-            alt="logo"
-          />
-          SpeakEasy
+          <h3 className="flex items-center justify-center font-fontNove">
+            <span className="mr-2">SpeakEasy</span>
+            <ChatBubbleLeftRightIcon className="h-6 w-6 text-center" />
+          </h3>
         </Link>
         <RegisterForm
           handleSubmit={handleSubmit}
