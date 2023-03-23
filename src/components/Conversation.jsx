@@ -1,10 +1,9 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
-import { signOut } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore";
-import { auth, db } from "../firebase/firebase";
-import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
+import { db } from "../firebase/firebase";
+import MessageInput from "./MessageInput";
 
 const Conversation = () => {
   const { data } = useContext(ChatContext);
@@ -39,12 +38,6 @@ const Conversation = () => {
         <span className="ml-2 block font-bold text-white">
           {data.user?.displayName}
         </span>
-        <p className="absolute right-12 z-50 font-fontNove text-white md:hidden">
-          SpeakEasy
-        </p>
-        <button onClick={() => signOut(auth)} className="absolute right-5">
-          <ArrowRightOnRectangleIcon className=" h-6 w-6 text-sky-400" />
-        </button>
       </div>
       <div
         className="relative h-[40rem] w-full overflow-y-auto bg-white p-6 md:h-[35rem]
@@ -94,6 +87,7 @@ const Conversation = () => {
           );
         })}
       </div>
+      <MessageInput />
     </div>
   );
 };
