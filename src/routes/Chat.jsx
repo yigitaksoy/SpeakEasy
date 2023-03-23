@@ -1,5 +1,4 @@
 import Conversation from "../components/Conversation";
-import MessageInput from "../components/MessageInput";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 
@@ -17,7 +16,6 @@ const Chat = () => {
               <div className="lg:col-span-2 lg:block">
                 <div className="w-full">
                   <Conversation />
-                  <MessageInput />
                 </div>
               </div>
             </div>
