@@ -118,7 +118,7 @@ const Register = () => {
           err={err}
         />
 
-        <div className="mt-5 text-center font-black transition duration-300 hover:text-white">
+        <div className="mt-5 text-center font-black text-black transition duration-100 hover:text-white">
           <Link to="/">Go back to the homepage</Link>
         </div>
       </div>
