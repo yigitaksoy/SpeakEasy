@@ -1,12 +1,27 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
 
 const Login = () => {
   const [err, setErr] = useState(false);
   const navigate = useNavigate();
+
+  const googleSignIn = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then(() => {
+        navigate("/chat");
+      })
+      .catch((error) => {
+        console.info(error);
+      });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -108,7 +123,7 @@ const Login = () => {
                 <p className="mx-4 mb-0 text-center font-semibold ">or</p>
               </div>
               <div className="flex flex-col space-y-4">
-                <Link
+                <button
                   to="#"
                   className="group flex items-center justify-center space-x-2 rounded-md border border-gray-800 px-4 py-2 transition-colors duration-300 hover:bg-gray-800 focus:outline-none"
                 >
@@ -128,11 +143,11 @@ const Login = () => {
                   <span className="text-sm font-medium text-gray-800 group-hover:text-white">
                     Sign in with Github
                   </span>
-                </Link>
+                </button>
               </div>
               <div className="flex flex-col space-y-4">
-                <Link
-                  to="#"
+                <button
+                  onClick={googleSignIn}
                   className="group flex items-center justify-center space-x-2 rounded-md border border-gray-800 px-4 py-2 transition-colors duration-300 hover:bg-gray-800 focus:outline-none"
                 >
                   <svg
@@ -159,12 +174,12 @@ const Login = () => {
                   <span className="text-sm font-medium text-gray-800 group-hover:text-white">
                     Sign in with Google
                   </span>
-                </Link>
+                </button>
               </div>
             </form>
           </div>
         </div>
-        <div className="mt-5 text-center font-black transition duration-300 hover:text-white">
+        <div className="mt-5 text-center font-black text-black transition duration-100 hover:text-white">
           <Link to="/">Go back to the homepage</Link>
         </div>
       </div>
