@@ -30,9 +30,14 @@ const Search = () => {
 
     try {
       const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        setUser(doc.data());
-      });
+      if (querySnapshot.size === 0) {
+        setError(true);
+      } else {
+        querySnapshot.forEach((doc) => {
+          setUser(doc.data());
+        });
+        setError(false);
+      }
     } catch (error) {
       console.info(error);
       setError(true);
@@ -95,7 +100,9 @@ const Search = () => {
           value={username}
         />
       </div>
-      {error && <span>User not found!</span>}
+      <div className="text-center">
+        {error && <p className="py-5 text-sm text-red-500">User not found!</p>}
+      </div>
       {user && (
         <div className="mt-5 flex-1 border-b-2 border-orange-500">
           <ul className="overflow-auto">
