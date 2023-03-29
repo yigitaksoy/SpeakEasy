@@ -69,6 +69,14 @@ const Conversation = () => {
                 </div>
               </div>
               <div className={`chat-bubble m-1 ${bubbleClass}`}>
+                {message.img && (
+                  <img
+                    src={message.img}
+                    alt=""
+                    className="h-30 w-40 rounded-xl object-contain"
+                  />
+                )}
+
                 {message.text}
               </div>
               <div className="chat-footer text-xs opacity-50">
